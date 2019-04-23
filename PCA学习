@@ -1,0 +1,18 @@
+from sklearn.datasets import load_iris
+import numpy as np
+from numpy.linalg import eig
+
+def pca(x, k):
+    x = x - x.mean(axis=0)
+    x_cov = np.cov(x.T, ddof=0)
+    eigenvalues, eigenvectors = eig(x_cov)
+    klarge_index = eigenvalues.argsort()[-k:][::-1]
+    k_eigenvectors = eigenvectors[klarge_index]
+    return np.dot(x, k_eigenvectors.T)
+
+
+iris = load_iris()
+x = iris.data
+k = 2
+x_pca = pca(x, k)
+
